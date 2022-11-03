@@ -1,14 +1,10 @@
 package com.example.assignment5
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 //import android.provider.ContactsContract.CommonDataKinds.Note
 import android.widget.Button
 import android.widget.EditText
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         val bookAuthor = findViewById<EditText>(R.id.bookAuthor);
 
         val addBtn = findViewById<Button>(R.id.addBtn)
+        val getAllBtn = findViewById<Button>(R.id.getAllButton)
 
         addBtn.setOnClickListener {
 //      Book name
@@ -33,5 +30,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        getAllBtn.setOnClickListener{
+            db.selectAll()
+        }
     }
 }

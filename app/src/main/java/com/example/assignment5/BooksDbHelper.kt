@@ -13,13 +13,17 @@ class BooksDbHelper(context: Context) :
     SQLiteOpenHelper(context, DbConfig.DATABASE_NAME, null, DbConfig.VERSION) {
 
     companion object {
-        private const val SQL_CREATE_TABLE = "CREATE TABLE ${Books.TABLE_NAME} " +
+        private const val SQL_CREATE_TABLE = "CREATE TABLE ${Books.TABLE_NAME} (" +
                 "${Books.BOOK_COLUMNS.ID} INTEGER PRIMARY KEY, " +
                 "${Books.BOOK_COLUMNS.BOOK_NAME} TEXT, " +
-                "${Books.BOOK_COLUMNS.BOOK_AUTHOR} TEXT"
+                "${Books.BOOK_COLUMNS.BOOK_AUTHOR} TEXT)"
 
         private const val SQL_DELETE_TABLE = "DROP TABLE IF EXISTS ${Books.TABLE_NAME}"
+
+        private const val SQL_GET_ALL = "SELECT * FROM ${Books.TABLE_NAME}"
     }
+
+
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(SQL_CREATE_TABLE)
@@ -61,5 +65,14 @@ class BooksDbHelper(context: Context) :
 
     fun deleteAll() {
         writableDatabase.delete(Books.TABLE_NAME, null, null)
+    }
+
+//    ეს რო დიდი ალბათობით სისულელეა, ვიცი :)
+    @SuppressLint("Range")
+    fun selectAll() {
+//        db?.execSQL(SQL_GET_ALL)
+        fun getAll(db: SQLiteDatabase?) {
+            Log.d("MyData", db?.execSQL(SQL_GET_ALL).toString())
+        }
     }
 }
