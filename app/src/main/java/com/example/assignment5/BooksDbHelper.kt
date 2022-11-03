@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import java.util.Objects
 
 
 class BooksDbHelper(context: Context) :
@@ -22,7 +23,6 @@ class BooksDbHelper(context: Context) :
 
         private const val SQL_GET_ALL = "SELECT * FROM ${Books.TABLE_NAME}"
     }
-
 
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -67,12 +67,29 @@ class BooksDbHelper(context: Context) :
         writableDatabase.delete(Books.TABLE_NAME, null, null)
     }
 
-//    ეს რო დიდი ალბათობით სისულელეა, ვიცი :)
+    //    ეს რო დიდი ალბათობით სისულელეა, ვიცი :)
     @SuppressLint("Range")
-    fun selectAll() {
-//        db?.execSQL(SQL_GET_ALL)
-        fun getAll(db: SQLiteDatabase?) {
-            Log.d("MyData", db?.execSQL(SQL_GET_ALL).toString())
+    fun selectAll(length: Int) {
+        val projection = arrayOf(
+            Books.BOOK_COLUMNS.BOOK_NAME,
+            Books.BOOK_COLUMNS.BOOK_AUTHOR,
+            Books.BOOK_COLUMNS.ID
+        )
+
+        val where = "${Books.BOOK_COLUMNS.BOOK_NAME} > ?"
+        val whereArgs = arrayOf(length.toString())
+
+        val cursor =
+            readableDatabase.query(Books.TABLE_NAME, projection, where, whereArgs, null, null, null)
+
+        while (cursor.moveToNext()) {
+            val bookName = cursor.getString(cursor.getColumnIndex(Books.BOOK_COLUMNS.BOOK_NAME))
+            val bookAuthor = cursor.getString(cursor.getColumnIndex(Books.BOOK_COLUMNS.BOOK_AUTHOR))
+
+            Log.d("Books", "$bookName  $bookAuthor")
         }
+
+        cursor.close()
+
     }
 }
